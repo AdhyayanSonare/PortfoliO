@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List - Adhyayan Sonaray</title>
+    <title>Todo List - Adhyayan Sonare</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            background-color: #f3f4f6;
+            color: #111111;
+        }
+
         .todo-container {
             max-width: 600px;
             margin: 2rem auto;
             padding: 2rem;
-            background-color: var(--secondary);
+            background-color: #ffffff;
             border-radius: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -30,21 +35,23 @@
         .todo-input {
             flex: 1;
             padding: 0.75rem 1rem;
-            border: 2px solid var(--primary);
+            border: 2px solid #e5e7eb;
             border-radius: 0.5rem;
             font-size: 1rem;
             font-family: inherit;
+            color: #111111;
         }
 
         .todo-input:focus {
             outline: none;
-            box-shadow: 0 0 0 2px var(--accent);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
         }
 
         .todo-button {
             padding: 0.75rem 1.5rem;
-            background-color: var(--primary);
-            color: var(--secondary);
+            background-color: #2563eb;
+            color: #ffffff;
             border: none;
             border-radius: 0.5rem;
             cursor: pointer;
@@ -53,7 +60,30 @@
         }
 
         .todo-button:hover {
-            background-color: var(--accent);
+            background-color: #1d4ed8;
+        }
+
+        .todo-filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            background-color: #ffffff;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-button.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
         }
 
         .todo-list {
@@ -66,8 +96,8 @@
             display: flex;
             align-items: center;
             padding: 1rem;
-            background-color: var(--accent);
-            color: var(--secondary);
+            background-color: #f3f4f6;
+            color: #111111;
             border-radius: 0.5rem;
             margin-bottom: 0.5rem;
             transition: transform 0.2s ease;
@@ -75,6 +105,7 @@
 
         .todo-item:hover {
             transform: translateX(5px);
+            background-color: #e5e7eb;
         }
 
         .todo-checkbox {
@@ -87,17 +118,51 @@
         .todo-text {
             flex: 1;
             font-size: 1rem;
+            color: #111111;
         }
 
         .todo-item.completed .todo-text {
             text-decoration: line-through;
-            opacity: 0.7;
+            color: #6b7280;
         }
 
-        .todo-delete {
+        .todo-priority {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            margin-right: 0.5rem;
+        }
+
+        .priority-high {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+
+        .priority-medium {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority-low {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+
+        .todo-date {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-right: 0.5rem;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .todo-edit {
             background: none;
             border: none;
-            color: var(--secondary);
+            color: #2563eb;
             cursor: pointer;
             padding: 0.5rem;
             font-size: 1.2rem;
@@ -105,7 +170,18 @@
             transition: opacity 0.2s ease;
         }
 
-        .todo-delete:hover {
+        .todo-delete {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .todo-edit:hover, .todo-delete:hover {
             opacity: 1;
         }
 
@@ -114,15 +190,15 @@
             justify-content: space-between;
             margin-top: 2rem;
             padding-top: 1rem;
-            border-top: 2px solid var(--primary);
-            color: var(--primary);
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
             font-size: 0.9rem;
         }
 
         .todo-clear {
             background: none;
             border: none;
-            color: var(--primary);
+            color: #6b7280;
             cursor: pointer;
             font-size: 0.9rem;
             opacity: 0.7;
@@ -137,15 +213,15 @@
             display: inline-block;
             margin: 2rem;
             padding: 0.75rem 1.5rem;
-            background-color: var(--primary);
-            color: var(--secondary);
+            background-color: #2563eb;
+            color: #ffffff;
             border-radius: 0.5rem;
             text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
         .back-button:hover {
-            background-color: var(--accent);
+            background-color: #1d4ed8;
         }
     </style>
 </head>
@@ -167,6 +243,15 @@
             <button class="todo-button" id="add-button">Add</button>
         </div>
 
+        <div class="todo-filters">
+            <button class="filter-button active" data-filter="all">All</button>
+            <button class="filter-button" data-filter="active">Active</button>
+            <button class="filter-button" data-filter="completed">Completed</button>
+            <button class="filter-button" data-filter="high">High Priority</button>
+            <button class="filter-button" data-filter="medium">Medium Priority</button>
+            <button class="filter-button" data-filter="low">Low Priority</button>
+        </div>
+
         <ul class="todo-list" id="todo-list">
             <!-- Todo items will be added here dynamically -->
         </ul>
@@ -183,9 +268,11 @@
         const todoList = document.getElementById('todo-list');
         const todoCount = document.getElementById('todo-count');
         const clearCompleted = document.getElementById('clear-completed');
+        const filterButtons = document.querySelectorAll('.filter-button');
 
         // Load todos from localStorage
         let todos = JSON.parse(localStorage.getItem('todos')) || [];
+        let currentFilter = 'all';
 
         function saveTodos() {
             localStorage.setItem('todos', JSON.stringify(todos));
@@ -196,18 +283,33 @@
             todoCount.textContent = `${remainingTodos} item${remainingTodos !== 1 ? 's' : ''} left`;
         }
 
+        function getPriorityColor(priority) {
+            switch(priority) {
+                case 'high': return 'priority-high';
+                case 'medium': return 'priority-medium';
+                case 'low': return 'priority-low';
+                default: return '';
+            }
+        }
+
         function createTodoElement(todo) {
             const li = document.createElement('li');
             li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
             
             li.innerHTML = `
                 <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''}>
+                <span class="todo-priority ${getPriorityColor(todo.priority)}">${todo.priority}</span>
                 <span class="todo-text">${todo.text}</span>
-                <button class="todo-delete">×</button>
+                <span class="todo-date">${todo.dueDate || 'No due date'}</span>
+                <div class="todo-actions">
+                    <button class="todo-edit">✎</button>
+                    <button class="todo-delete">×</button>
+                </div>
             `;
 
             const checkbox = li.querySelector('.todo-checkbox');
             const deleteButton = li.querySelector('.todo-delete');
+            const editButton = li.querySelector('.todo-edit');
 
             checkbox.addEventListener('change', () => {
                 todo.completed = checkbox.checked;
@@ -223,6 +325,15 @@
                 updateTodoCount();
             });
 
+            editButton.addEventListener('click', () => {
+                const newText = prompt('Edit task:', todo.text);
+                if (newText !== null && newText.trim() !== '') {
+                    todo.text = newText.trim();
+                    li.querySelector('.todo-text').textContent = newText.trim();
+                    saveTodos();
+                }
+            });
+
             return li;
         }
 
@@ -231,7 +342,10 @@
             
             const todo = {
                 text: text.trim(),
-                completed: false
+                completed: false,
+                priority: 'medium',
+                dueDate: null,
+                createdAt: new Date().toISOString()
             };
             
             todos.push(todo);
@@ -240,6 +354,42 @@
             updateTodoCount();
             todoInput.value = '';
         }
+
+        function filterTodos() {
+            todoList.innerHTML = '';
+            let filteredTodos = todos;
+
+            switch(currentFilter) {
+                case 'active':
+                    filteredTodos = todos.filter(todo => !todo.completed);
+                    break;
+                case 'completed':
+                    filteredTodos = todos.filter(todo => todo.completed);
+                    break;
+                case 'high':
+                    filteredTodos = todos.filter(todo => todo.priority === 'high');
+                    break;
+                case 'medium':
+                    filteredTodos = todos.filter(todo => todo.priority === 'medium');
+                    break;
+                case 'low':
+                    filteredTodos = todos.filter(todo => todo.priority === 'low');
+                    break;
+            }
+
+            filteredTodos.forEach(todo => {
+                todoList.appendChild(createTodoElement(todo));
+            });
+        }
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.dataset.filter;
+                filterTodos();
+            });
+        });
 
         function renderTodos() {
             todoList.innerHTML = '';
@@ -262,7 +412,6 @@
         clearCompleted.addEventListener('click', () => {
             todos = todos.filter(todo => !todo.completed);
             renderTodos();
-            saveTodos();
         });
 
         // Initial render
