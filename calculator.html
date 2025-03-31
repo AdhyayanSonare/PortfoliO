@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - Adhyayan Sonaray</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .calculator-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: var(--secondary);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculator-display {
+            background-color: #f3f4f6;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            text-align: right;
+            min-height: 80px;
+        }
+
+        .calculator-expression {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+            min-height: 24px;
+        }
+
+        .calculator-result {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            word-wrap: break-word;
+        }
+
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .calculator-button {
+            padding: 1rem;
+            font-size: 1.25rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-weight: 500;
+        }
+
+        .calculator-button.number {
+            background-color: #f3f4f6;
+            color: var(--primary);
+        }
+
+        .calculator-button.operator {
+            background-color: #e5e7eb;
+            color: var(--primary);
+        }
+
+        .calculator-button.equals {
+            background-color: var(--primary);
+            color: var(--secondary);
+            grid-column: span 2;
+        }
+
+        .calculator-button.clear {
+            background-color: #fee2e2;
+            color: #ef4444;
+        }
+
+        .calculator-button:hover {
+            opacity: 0.9;
+        }
+
+        .calculator-button:active {
+            transform: scale(0.95);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: var(--secondary);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Back to Portfolio</a>
+    
+    <div class="calculator-container">
+        <div class="calculator-display">
+            <div class="calculator-expression" id="expression"></div>
+            <div class="calculator-result" id="result">0</div>
+        </div>
+
+        <div class="calculator-buttons">
+            <button class="calculator-button clear" onclick="clearCalculator()">C</button>
+            <button class="calculator-button operator" onclick="appendOperator('(')">(</button>
+            <button class="calculator-button operator" onclick="appendOperator(')')">)</button>
+            <button class="calculator-button operator" onclick="appendOperator('/')">/</button>
+            
+            <button class="calculator-button number" onclick="appendNumber('7')">7</button>
+            <button class="calculator-button number" onclick="appendNumber('8')">8</button>
+            <button class="calculator-button number" onclick="appendNumber('9')">9</button>
+            <button class="calculator-button operator" onclick="appendOperator('*')">×</button>
+            
+            <button class="calculator-button number" onclick="appendNumber('4')">4</button>
+            <button class="calculator-button number" onclick="appendNumber('5')">5</button>
+            <button class="calculator-button number" onclick="appendNumber('6')">6</button>
+            <button class="calculator-button operator" onclick="appendOperator('-')">-</button>
+            
+            <button class="calculator-button number" onclick="appendNumber('1')">1</button>
+            <button class="calculator-button number" onclick="appendNumber('2')">2</button>
+            <button class="calculator-button number" onclick="appendNumber('3')">3</button>
+            <button class="calculator-button operator" onclick="appendOperator('+')">+</button>
+            
+            <button class="calculator-button number" onclick="appendNumber('0')">0</button>
+            <button class="calculator-button number" onclick="appendNumber('.')">.</button>
+            <button class="calculator-button equals" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let expression = '';
+        let result = '0';
+
+        const expressionElement = document.getElementById('expression');
+        const resultElement = document.getElementById('result');
+
+        function updateDisplay() {
+            expressionElement.textContent = expression;
+            resultElement.textContent = result;
+        }
+
+        function appendNumber(num) {
+            expression += num;
+            result = expression;
+            updateDisplay();
+        }
+
+        function appendOperator(operator) {
+            expression += operator;
+            result = expression;
+            updateDisplay();
+        }
+
+        function clearCalculator() {
+            expression = '';
+            result = '0';
+            updateDisplay();
+        }
+
+        function calculate() {
+            try {
+                result = eval(expression).toString();
+                expression = result;
+                updateDisplay();
+            } catch (error) {
+                result = 'Error';
+                expression = '';
+                updateDisplay();
+            }
+        }
+    </script>
+</body>
+</html> 
