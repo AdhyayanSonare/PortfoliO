@@ -645,20 +645,4 @@ a {
     padding: 0.75rem;
   }
 }
-
-/* Remove custom scrollbar for better performance */
-::-webkit-scrollbar {
-  width: auto;
-}
-
-::-webkit-scrollbar-track {
-  background: none;
-}
-
-::-webkit-scrollbar-thumb {
-  background: none;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: none;
-} 
+  
