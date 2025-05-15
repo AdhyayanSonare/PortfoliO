@@ -344,43 +344,6 @@
             errorMessage.style.display = 'block';
         }
         
-        // Optional: Try to get user's location on page load
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        getWeatherByCoords(position.coords.latitude, position.coords.longitude);
-                    },
-                    (error) => {
-                        // Silently fail - we have the search form as fallback
-                        console.log("Couldn't get location: " + error.message);
-                    }
-                );
-            }
-        }
-        
-        async function getWeatherByCoords(lat, lon) {
-            showLoading();
-            
-            try {
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
-                
-                if (!response.ok) {
-                    throw new Error('Failed to fetch weather data for your location.');
-                }
-                
-                const data = await response.json();
-                displayWeatherData(data);
-                
-            } catch (error) {
-                // Just revert to the initial state with search form
-                hideLoading();
-                initialMessage.style.display = 'block';
-            }
-        }
-        
-        // Try to get user's location on page load
-        window.addEventListener('load', getLocation);
     </script>
 </body>
 </html> 
